@@ -151,6 +151,7 @@ class MainActivity : ComponentActivity() {
                     showSplash = false
                 }
 
+
                 if (showSplash) {
                     SplashScreen()
                 } else {
