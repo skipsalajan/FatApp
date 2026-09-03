@@ -4,6 +4,8 @@ import android.content.Context
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private const val PREFS_NAME = "fatapp_steps_auto"
 private const val KEY_YESTERDAY_MAX = "yesterday_max_steps"
@@ -20,11 +22,16 @@ object AutoWalkingLogger {
      * If a new day is detected, create a Walking entry for yesterday
      * if one does not already exist, and return its steps (or null).
      */
+    /**
+     * Call this on app start / foreground.
+     * If a new day is detected, create a Walking entry for yesterday
+     * if one does not already exist, and return its steps (or null).
+     */
     suspend fun maybeCreateYesterdayWalkingEntry(
         context: Context,
         activityDao: ActivityDao,
         currentCounter: Long
-    ): Int? {
+    ): Int? = withContext(Dispatchers.IO) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
         val today = LocalDate.now().format(dateFormatter)
@@ -36,12 +43,12 @@ object AutoWalkingLogger {
                 .putString(KEY_LAST_DATE, today)
                 .putLong(KEY_YESTERDAY_MAX, currentCounter)
                 .apply()
-            return null
+            return@withContext null
         }
 
         // Same day – nothing to do
         if (lastDate == today) {
-            return null
+            return@withContext null
         }
 
         // New day – try to create entry for yesterday
@@ -81,7 +88,7 @@ object AutoWalkingLogger {
             .putLong(KEY_YESTERDAY_MAX, currentCounter)
             .apply()
 
-        return if (existing == null && yesterdayMax > 0) yesterdayMax else null
+        if (existing == null && yesterdayMax > 0) yesterdayMax else null
     }
 
     /**

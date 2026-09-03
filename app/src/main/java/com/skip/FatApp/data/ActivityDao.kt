@@ -43,5 +43,5 @@ interface ActivityDao {
     ORDER BY id DESC
     """
     )
-    fun getWalkingEntriesForDay(dayStartMillis: Long, dayEndMillis: Long): List<ActivityEntry>
+    suspend fun getWalkingEntriesForDay(dayStartMillis: Long, dayEndMillis: Long): List<ActivityEntry>
 }

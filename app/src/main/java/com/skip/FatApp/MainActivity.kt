@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                 var showSplash by remember { mutableStateOf(true) }
 
                 LaunchedEffect(Unit) {
-                    delay(2000)
+                    delay(1000)
                     showSplash = false
                 }
 
@@ -269,7 +269,8 @@ fun FatApp() {
         )
     }
     // On each app start, check if we need to create yesterday's Walking entry
-    scope.launch {
+    // On each app start, check if we need to create yesterday's Walking entry
+    LaunchedEffect(Unit) {
         // We pass 0L as currentCounter; AutoWalkingLogger only uses it for baseline reset
         AutoWalkingLogger.maybeCreateYesterdayWalkingEntry(
             context = context,
