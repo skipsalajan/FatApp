@@ -1,5 +1,5 @@
 FatApp
-FatApp este o aplicatie Android pentru monitorizarea progresului personal si a activitatii fizice.
+FatApp este o aplicatie Android pentru monitorizarea progresului personal si a activitatii fizice, ruleaza local, are functie de export/import date salvate local.
 
 Functionalitati
 Inregistrarea greutatii si vizualizarea istoricului.
